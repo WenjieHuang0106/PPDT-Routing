@@ -1,0 +1,590 @@
+(PCB "空气净化扩展部分PCB2"
+  (parser
+    (host_cad "EasyEDA Pro")
+    (host_version "3.2.69")
+  )
+  (resolution mil 1000)
+  (structure
+    (boundary(path signal 0 200.34 1101.26 203.9 1123.74 214.23 1144.02 230.32 1160.11 250.6 1170.44 273.08 1174 2754.03 1174.44 2776.52 1170.88 2796.8 1160.55 2812.89 1144.46 2823.23 1124.18 2826.79 1101.7 2826.79 690 2828.54 685.76 2832.79 684 2945.6 684 2968.08 680.44 2988.35 670.11 3004.45 654.02 3014.78 633.74 3018.34 611.26 3018.34 568.74 3014.78 546.26 3004.45 525.98 2988.35 509.89 2968.08 499.56 2945.6 496 2829.34 496 2825.1 494.24 2823.34 490 2823.34 79.1 2819.78 56.63 2809.45 36.35 2793.36 20.26 2773.08 9.92 2750.61 6.36 273.08 6 250.6 9.56 230.32 19.89 214.23 35.98 203.9 56.26 200.34 78.74 200.34 490.08 198.58 494.33 194.34 496.08 78.74 496.08 56.26 499.64 35.98 509.98 19.89 526.07 9.56 546.35 6 568.82 6 611.26 9.56 633.74 19.89 654.02 35.98 670.11 56.26 680.44 78.74 684 194.34 684 198.58 685.76 200.34 690 200.34 1101.26 )
+    )
+    (via via0
+    )
+    (grid via   0.25)
+    (grid wire   0.25)
+    (grid place   0.25)
+    (rule(clear 6.03))
+    (rule(clear 6.03 (type default_smd)))
+    (rule(clear 6.03 (type smd_smd)))
+    (rule(width 10.05))
+    (layer TopLayer
+      (type signal)
+    )
+    (layer BottomLayer
+      (type signal)
+    )
+  )
+
+  (placement
+    (component u1
+      (place u1 0 0 front 0
+      )
+    )
+  )
+  (library
+    (image u1
+      (pin p930 930 99.34 590)
+      (pin p930 934 2929.34 590)
+      (pin p0e14 0e14 834.34 202.56)
+      (pin p0e14 0e15 834.34 147.44)
+      (pin p1e14 1e14 376.78 375)
+      (pin p1e14 1e15 431.9 375)
+      (pin p2e14 2e14 764.34 147.44)
+      (pin p2e14 2e15 764.34 202.56)
+      (pin p3e14 3e14 431.9 305)
+      (pin p3e14 3e15 376.78 305)
+      (pin p0e14 4e14 1834.34 367.56)
+      (pin p0e14 4e15 1834.34 312.44)
+      (pin p0e14 5e14 1909.34 367.56)
+      (pin p0e14 5e15 1909.34 312.44)
+      (pin p3e14 6e14 561.9 660)
+      (pin p3e14 6e15 506.78 660)
+      (pin p3e14 7e14 561.9 730)
+      (pin p3e14 7e15 506.78 730)
+      (pin p3e14 8e14 1906.9 660)
+      (pin p3e14 8e15 1851.78 660)
+      (pin p3e14 9e14 1904.58 730)
+      (pin p3e14 9e15 1849.46 730)
+      (pin p10e20 10e20 1385.63 1091.85)
+      (pin p10e20 10e21 1173.04 1091.85)
+      (pin p10e22 10e22 1249.81 948.15)
+      (pin p10e22 10e23 1308.86 948.15)
+      (pin p11e13 11e13 517.02 205)
+      (pin p11e13 11e14 351.66 205)
+      (pin p12e5 12e5 584.66 410)
+      (pin p12e5 12e6 814.02 410)
+      (pin p13e19 13e19 2594.34 675)
+      (pin p13e19 13e20 2594.34 475)
+      (pin p14e14 14e14 1211.94 745.63)
+      (pin p14e14 14e15 1286.74 745.63)
+      (pin p14e14 14e16 1249.34 824.37)
+      (pin p15e14 15e14 1829.97 152.4)
+      (pin p15e14 15e15 1829.97 77.6)
+      (pin p15e14 15e16 1908.71 115)
+      (pin p16e14 16e14 983.71 662.6)
+      (pin p16e14 16e15 983.71 737.4)
+      (pin p16e14 16e16 904.97 700)
+      (pin p14e14 17e14 266.94 655.63)
+      (pin p14e14 17e15 341.74 655.63)
+      (pin p14e14 17e16 304.34 734.37)
+      (pin p14e14 18e14 2211.94 650.63)
+      (pin p14e14 18e15 2286.74 650.63)
+      (pin p14e14 18e16 2249.34 729.37)
+      (pin p14e14 19e14 1611.94 655.63)
+      (pin p14e14 19e15 1686.74 655.63)
+      (pin p14e14 19e16 1649.34 734.37)
+      (pin p20e7 20e7 374.68 95)
+      (pin p20e7 20e8 434 95)
+      (pin p20e7 21e7 499.68 95)
+      (pin p20e7 21e8 559 95)
+      (pin p20e7 22e7 624.68 95)
+      (pin p20e7 22e8 684 95)
+      (pin p23e7 23e7 1374 855)
+      (pin p23e7 23e8 1314.68 855)
+      (pin p24e7 24e7 1764.34 150.34)
+      (pin p24e7 24e8 1764.34 209.66)
+      (pin p20e7 25e7 1054.68 660)
+      (pin p20e7 25e8 1114 660)
+      (pin p20e7 26e7 1219.68 680)
+      (pin p20e7 26e8 1279 680)
+      (pin p20e7 27e7 274.68 585)
+      (pin p20e7 27e8 334 585)
+      (pin p28e7 28e7 704.34 729.66)
+      (pin p28e7 28e8 704.34 670.34)
+      (pin p23e7 29e7 2209 585)
+      (pin p23e7 29e8 2149.68 585)
+      (pin p23e7 30e7 1549 655)
+      (pin p23e7 30e8 1489.68 655)
+      (pin p28e7 31e7 2049.34 729.66)
+      (pin p28e7 31e8 2049.34 670.34)
+      (pin p32e4 32e4 1033.28 371.73)
+      (pin p32e4 32e5 1131.7 371.73)
+      (pin p32e4 32e6 1230.13 371.73)
+      (pin p32e4 32e7 1328.55 371.73)
+      (pin p32e4 32e8 1426.98 371.73)
+      (pin p32e4 32e9 1525.4 371.73)
+      (pin p32e10 32e10 1639.58 88.27)
+      (pin p32e10 32e11 919.1 88.27)
+      (pin p33e7 33e7 609.1 232.4)
+      (pin p33e7 33e8 609.1 195)
+      (pin p33e7 33e9 609.1 157.6)
+      (pin p33e7 33e10 699.58 157.6)
+      (pin p33e7 33e11 699.58 195)
+      (pin p33e7 33e12 699.58 232.4)
+      (pin p13e19 34e18 304.34 990)
+      (pin p13e19 34e19 504.34 990)
+      (pin p13e19 34e20 704.34 990)
+      (pin p13e19 34e21 904.34 990)
+      (pin p35e10 35e10 1734.34 570)
+      (pin p35e11 35e11 1634.34 570)
+      (pin p13e19 36e18 1649.34 990)
+      (pin p13e19 36e19 1849.34 990)
+      (pin p13e19 36e20 2049.34 990)
+      (pin p13e19 36e21 2249.34 990)
+      (pin p1ba1768162ab9b3e20 1ba1768162ab9b3e20 2089.34 290)
+      (pin p35e11 1ba1768162ab9b3e21 2189.34 290)
+      (pin p35e11 1ba1768162ab9b3e22 2389.34 290)
+      (pin p35e11 1ba1768162ab9b3e23 2589.34 290)
+    )
+
+    (padstack via0
+      (shape(circle TopLayer 24))
+      (shape(circle BottomLayer 24))
+    )
+
+    (padstack p930
+      (shape(circle TopLayer 149.61 0 0))
+      (shape(circle BottomLayer 149.61 0 0))
+    )
+    (padstack p0e14
+      (shape(polygon TopLayer 0.1 17.72 -15.75 -17.72 -15.75 -17.72 -15.75 -17.72 15.75 -17.72 15.75 17.72 15.75 17.72 15.75 17.72 -15.75))
+    )
+    (padstack p1e14
+      (shape(polygon TopLayer 0.1 15.75 17.72 15.75 -17.72 15.75 -17.72 -15.75 -17.72 -15.75 -17.72 -15.75 17.72 -15.75 17.72 15.75 17.72))
+    )
+    (padstack p2e14
+      (shape(polygon TopLayer 0.1 -17.72 15.75 17.72 15.75 17.72 15.75 17.72 -15.75 17.72 -15.75 -17.72 -15.75 -17.72 -15.75 -17.72 15.75))
+    )
+    (padstack p3e14
+      (shape(polygon TopLayer 0.1 -15.75 -17.72 -15.75 17.72 -15.75 17.72 15.75 17.72 15.75 17.72 15.75 -17.72 15.75 -17.72 -15.75 -17.72))
+    )
+    (padstack p10e20
+      (shape(polygon TopLayer 0.1 -21.65 -37.4 -21.65 37.4 -21.65 37.4 21.65 37.4 21.65 37.4 21.65 -37.4 21.65 -37.4 -21.65 -37.4))
+    )
+    (padstack p10e22
+      (shape(polygon TopLayer 0.1 -13.78 -51.18 -13.78 51.18 -13.78 51.18 13.78 51.18 13.78 51.18 13.78 -51.18 13.78 -51.18 -13.78 -51.18))
+    )
+    (padstack p11e13
+      (shape(polygon TopLayer 0.1 39.37 31.36 39.37 -31.36 39.37 -31.36 -39.37 -31.36 -39.37 -31.36 -39.37 31.36 -39.37 31.36 39.37 31.36))
+    )
+    (padstack p12e5
+      (shape(polygon TopLayer 0.1 42.32 65.35 42.32 -65.35 42.32 -65.35 -42.32 -65.35 -42.32 -65.35 -42.32 65.35 -42.32 65.35 42.32 65.35))
+    )
+    (padstack p13e19
+      (shape(circle TopLayer 78.74 0 0))
+      (shape(circle BottomLayer 78.74 0 0))
+    )
+    (padstack p14e14
+      (shape(polygon TopLayer 0.1 -13.78 24.61 13.78 24.61 13.78 24.61 13.78 -24.61 13.78 -24.61 -13.78 -24.61 -13.78 -24.61 -13.78 24.61))
+    )
+    (padstack p15e14
+      (shape(polygon TopLayer 0.1 24.61 13.78 24.61 -13.78 24.61 -13.78 -24.61 -13.78 -24.61 -13.78 -24.61 13.78 -24.61 13.78 24.61 13.78))
+    )
+    (padstack p16e14
+      (shape(polygon TopLayer 0.1 -24.61 -13.78 -24.61 13.78 -24.61 13.78 24.61 13.78 24.61 13.78 24.61 -13.78 24.61 -13.78 -24.61 -13.78))
+    )
+    (padstack p20e7
+      (shape(polygon TopLayer 0.1 15.88 17.01 15.88 -17.01 15.88 -17.01 -15.88 -17.01 -15.88 -17.01 -15.88 17.01 -15.88 17.01 15.88 17.01))
+    )
+    (padstack p23e7
+      (shape(polygon TopLayer 0.1 -15.88 -17.01 -15.88 17.01 -15.88 17.01 15.88 17.01 15.88 17.01 15.88 -17.01 15.88 -17.01 -15.88 -17.01))
+    )
+    (padstack p24e7
+      (shape(polygon TopLayer 0.1 -17.01 15.88 17.01 15.88 17.01 15.88 17.01 -15.88 17.01 -15.88 -17.01 -15.88 -17.01 -15.88 -17.01 15.88))
+    )
+    (padstack p28e7
+      (shape(polygon TopLayer 0.1 17.01 -15.88 -17.01 -15.88 -17.01 -15.88 -17.01 15.88 -17.01 15.88 17.01 15.88 17.01 15.88 17.01 -15.88))
+    )
+    (padstack p32e4
+      (shape(polygon TopLayer 0.1 -25.59 -98.42 -25.59 98.43 -25.59 98.43 25.59 98.43 25.59 98.43 25.59 -98.42 25.59 -98.42 -25.59 -98.42))
+    )
+    (padstack p32e10
+      (shape(polygon TopLayer 0.1 -29.53 -74.8 -29.53 74.8 -29.53 74.8 29.53 74.8 29.53 74.8 29.53 -74.8 29.53 -74.8 -29.53 -74.8))
+    )
+    (padstack p33e7
+      (shape(polygon TopLayer 0.1 -21.1 10.47 21.1 10.47 21.1 10.47 21.1 -10.47 21.1 -10.47 -21.1 -10.47 -21.1 -10.47 -21.1 10.47))
+    )
+    (padstack p35e10
+      (shape(polygon TopLayer 0.1 35.43 35.43 35.43 -35.43 35.43 -35.43 -35.43 -35.43 -35.43 -35.43 -35.43 35.43 -35.43 35.43 35.43 35.43))
+      (shape(polygon BottomLayer 0.1 35.43 35.43 35.43 -35.43 35.43 -35.43 -35.43 -35.43 -35.43 -35.43 -35.43 35.43 -35.43 35.43 35.43 35.43))
+    )
+    (padstack p35e11
+      (shape(circle TopLayer 70.87 0 0))
+      (shape(circle BottomLayer 70.87 0 0))
+    )
+    (padstack p1ba1768162ab9b3e20
+      (shape(polygon TopLayer 0.1 -35.43 -35.43 -35.43 35.43 -35.43 35.43 35.43 35.43 35.43 35.43 35.43 -35.43 35.43 -35.43 -35.43 -35.43))
+      (shape(polygon BottomLayer 0.1 -35.43 -35.43 -35.43 35.43 -35.43 35.43 35.43 35.43 35.43 35.43 35.43 -35.43 35.43 -35.43 -35.43 -35.43))
+    )
+  )
+  (network
+    (net +12V
+      (pins u1-1e14 u1-3e15 u1-4e15 u1-5e15 u1-6e15 u1-7e15 u1-8e15 u1-9e15 u1-11e14 u1-20e7 u1-23e7 u1-34e19 u1-36e19 u1-1ba1768162ab9b3e20)
+    )
+    (net GND
+      (pins u1-930 u1-934 u1-0e15 u1-1e15 u1-2e14 u1-3e14 u1-4e14 u1-5e14 u1-6e14 u1-7e14 u1-8e14 u1-9e14 u1-10e20 u1-10e21 u1-14e15 u1-15e15 u1-16e15 u1-17e15 u1-18e15 u1-19e15 u1-22e8 u1-32e4 u1-32e10 u1-32e11 u1-33e8)
+    )
+    (net $1N11726
+      (pins u1-15e16 u1-1ba1768162ab9b3e21)
+    )
+    (net $1N11725
+      (pins u1-13e19 u1-1ba1768162ab9b3e22)
+    )
+    (net $1N11724
+      (pins u1-13e20 u1-1ba1768162ab9b3e23)
+    )
+    (net +5V
+      (pins u1-0e14 u1-2e15 u1-12e6 u1-32e5 u1-33e10 u1-33e11)
+    )
+    (net $1N1956
+      (pins u1-11e13 u1-12e5 u1-33e7)
+    )
+    (net $1N11357
+      (pins u1-17e16 u1-34e18)
+    )
+    (net $1N2026
+      (pins u1-10e23 u1-23e8)
+    )
+    (net $1N10029
+      (pins u1-10e22 u1-14e16)
+    )
+    (net $1N11723
+      (pins u1-19e16 u1-36e18)
+    )
+    (net $1N2092
+      (pins u1-14e14 u1-26e7)
+    )
+    (net $1N10019
+      (pins u1-15e14 u1-24e7)
+    )
+    (net $1N7686
+      (pins u1-16e14 u1-25e7)
+    )
+    (net $1N7569
+      (pins u1-16e16 u1-34e21)
+    )
+    (net $1N11294
+      (pins u1-17e14 u1-27e7)
+    )
+    (net $1N11708
+      (pins u1-18e14 u1-29e7)
+    )
+    (net $1N11706
+      (pins u1-18e16 u1-36e21)
+    )
+    (net $1N11711
+      (pins u1-19e14 u1-30e7)
+    )
+    (net $1N1978
+      (pins u1-20e8 u1-21e7)
+    )
+    (net $1N1980
+      (pins u1-21e8 u1-22e7 u1-33e9)
+    )
+    (net NIG_IO
+      (pins u1-24e8 u1-32e6)
+    )
+    (net FAN_PWM
+      (pins u1-25e8 u1-29e8 u1-32e9)
+    )
+    (net UVC_IO
+      (pins u1-26e8 u1-32e7)
+    )
+    (net FAN_IO
+      (pins u1-27e8 u1-30e8 u1-32e8)
+    )
+    (net $1N11338
+      (pins u1-28e7 u1-34e20)
+    )
+    (net FAN_FB1
+      (pins u1-28e8 u1-35e11)
+    )
+    (net $1N11716
+      (pins u1-31e7 u1-36e20)
+    )
+    (net FAN_FB2
+      (pins u1-31e8 u1-35e10)
+    )
+    (class GND 'GND'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class FAN_IO 'FAN_IO'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class FAN_PWM 'FAN_PWM'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class FAN_FB1 'FAN_FB1'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class NIG_IO 'NIG_IO'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11357 '$1N11357'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N1980 '$1N1980'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class UVC_IO 'UVC_IO'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11294 '$1N11294'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N1978 '$1N1978'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class FAN_FB2 'FAN_FB2'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11711 '$1N11711'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N10019 '$1N10019'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11708 '$1N11708'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11716 '$1N11716'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N2092 '$1N2092'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N7686 '$1N7686'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11706 '$1N11706'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class +12V '+12V'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N7569 '$1N7569'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11723 '$1N11723'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class +5V '+5V'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N1956 '$1N1956'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class  ''
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N10029 '$1N10029'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N2026 '$1N2026'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11338 '$1N11338'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11725 '$1N11725'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11724 '$1N11724'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N11726 '$1N11726'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+    (class $1N10064 '$1N10064'
+      (circuit 
+        (use_via via0)
+      )
+      (rule 
+        (width 10)
+        (clearance 4.02)
+      )
+    )
+  )
+
+  (wiring
+  )
+)

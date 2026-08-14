@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src_uiDesign_Panel">
+      <UniqueIdentifier>{ec79f02d-7f9a-4c3d-be76-d086fef161ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_paint">
+      <UniqueIdentifier>{dfa68c81-3ba3-48ac-874b-2ac7f29efb3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_uiDesign">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src_uiDesign\GeoDisplay">
+      <UniqueIdentifier>{5761e8fb-5010-4978-a96e-ab21735f1063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_algorithms">
+      <UniqueIdentifier>{5cf3074b-f6a6-4fbb-8213-dfa16d7500b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_algorithms\src_basics">
+      <UniqueIdentifier>{f4680262-2063-483c-a4ef-e0ac80c60f9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_config">
+      <UniqueIdentifier>{f1819ab3-7b91-4ea0-8ecc-aa8aa829fbb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_paint\TabPage_dsn">
+      <UniqueIdentifier>{e173e67c-0f04-4df8-9048-337375ae6ca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_baseClasses">
+      <UniqueIdentifier>{d780d212-ef9a-4934-95bb-b6cf73cfd5a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_paint\TabPage_dsn\AlgorithmLink">
+      <UniqueIdentifier>{420f7cb7-22ac-4e88-afcd-87dd6f1b90f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_algorithms\src_dsn">
+      <UniqueIdentifier>{43ac68c8-18f1-4e77-906b-ecafc37d109d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>src_uiDesign</Filter>
+    </ClCompile>
+    <ClCompile Include="src_uiDesign\OptionsPanel.cpp">
+      <Filter>src_uiDesign_Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="src_uiDesign\setupOptionPanel.cpp">
+      <Filter>src_uiDesign\GeoDisplay</Filter>
+    </ClCompile>
+    <ClCompile Include="src_uiDesign\setupMenuBar.cpp">
+      <Filter>src_uiDesign\GeoDisplay</Filter>
+    </ClCompile>
+    <ClCompile Include="src_uiDesign\setupToolBar.cpp">
+      <Filter>src_uiDesign\GeoDisplay</Filter>
+    </ClCompile>
+    <ClCompile Include="src_uiDesign\GeoDisplay.cpp">
+      <Filter>src_uiDesign</Filter>
+    </ClCompile>
+    <ClCompile Include="src_algorithms\src_basics\dataStructAlg.cpp">
+      <Filter>src_algorithms\src_basics</Filter>
+    </ClCompile>
+    <ClCompile Include="src_algorithms\src_basics\utils.cpp">
+      <Filter>src_algorithms\src_basics</Filter>
+    </ClCompile>
+    <ClCompile Include="src_uiDesign\setupTabWidget.cpp">
+      <Filter>src_uiDesign\GeoDisplay</Filter>
+    </ClCompile>
+    <ClCompile Include="src_config\configUI.cpp">
+      <Filter>src_config</Filter>
+    </ClCompile>
+    <ClCompile Include="src_paint\TabPage_dsn\DataParser_dsn.cpp">
+      <Filter>src_paint\TabPage_dsn</Filter>
+    </ClCompile>
+    <ClCompile Include="src_paint\TabPage_dsn\TabPage_dsn.cpp">
+      <Filter>src_paint\TabPage_dsn</Filter>
+    </ClCompile>
+    <ClCompile Include="src_paint\TabPageRegister.cpp">
+      <Filter>src_paint</Filter>
+    </ClCompile>
+    <ClCompile Include="src_baseClasses\dataStructUI.cpp">
+      <Filter>src_baseClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src_baseClasses\TabPage.cpp">
+      <Filter>src_baseClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src_paint\Diagram.cpp">
+      <Filter>src_paint</Filter>
+    </ClCompile>
+    <ClCompile Include="src_config\DiagramStyle.cpp">
+      <Filter>src_config</Filter>
+    </ClCompile>
+    <ClCompile Include="src_paint\TabPage_dsn\AlgorithmLink\AlgorithmLink_dsn.cpp">
+      <Filter>src_paint\TabPage_dsn\AlgorithmLink</Filter>
+    </ClCompile>
+    <ClCompile Include="src_algorithms\src_dsn\RouterMeshless.cpp">
+      <Filter>src_algorithms\src_dsn</Filter>
+    </ClCompile>
+    <ClCompile Include="src_algorithms\src_dsn\MST.cpp">
+      <Filter>src_algorithms\src_dsn</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="src_uiDesign\OptionsPanel.ui">
+      <Filter>src_uiDesign_Panel</Filter>
+    </QtUic>
+    <QtUic Include="src_uiDesign\GeoDisplay.ui">
+      <Filter>src_uiDesign</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src_uiDesign\OptionsPanel.h">
+      <Filter>src_uiDesign_Panel</Filter>
+    </QtMoc>
+    <QtMoc Include="src_uiDesign\GeoDisplay.h">
+      <Filter>src_uiDesign</Filter>
+    </QtMoc>
+    <QtMoc Include="src_paint\TabPage_dsn\TabPage_dsn.h">
+      <Filter>src_paint\TabPage_dsn</Filter>
+    </QtMoc>
+    <QtMoc Include="src_baseClasses\TabPage.h">
+      <Filter>src_baseClasses</Filter>
+    </QtMoc>
+    <QtMoc Include="src_paint\Diagram.h">
+      <Filter>src_paint</Filter>
+    </QtMoc>
+    <QtMoc Include="src_config\configUI.h">
+      <Filter>src_config</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src_algorithms\src_basics\dataStructAlg.h">
+      <Filter>src_algorithms\src_basics</Filter>
+    </ClInclude>
+    <ClInclude Include="src_algorithms\src_basics\utils.h">
+      <Filter>src_algorithms\src_basics</Filter>
+    </ClInclude>
+    <ClInclude Include="src_paint\TabPage_dsn\DataParser_dsn.h">
+      <Filter>src_paint\TabPage_dsn</Filter>
+    </ClInclude>
+    <ClInclude Include="src_paint\TabPage_dsn\Data_dsn.h">
+      <Filter>src_paint\TabPage_dsn</Filter>
+    </ClInclude>
+    <ClInclude Include="src_baseClasses\Data.h">
+      <Filter>src_baseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src_baseClasses\dataStructUI.h">
+      <Filter>src_baseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src_baseClasses\DiagramData.h">
+      <Filter>src_baseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src_config\DiagramStyle.h">
+      <Filter>src_config</Filter>
+    </ClInclude>
+    <ClInclude Include="src_paint\TabPage_dsn\Style_dsn.h">
+      <Filter>src_paint\TabPage_dsn</Filter>
+    </ClInclude>
+    <ClInclude Include="src_paint\TabPage_dsn\AlgorithmLink\AlgorithmLink_dsn.h">
+      <Filter>src_paint\TabPage_dsn\AlgorithmLink</Filter>
+    </ClInclude>
+    <ClInclude Include="src_baseClasses\DataParser.h">
+      <Filter>src_baseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src_algorithms\src_dsn\RouterMeshless.h">
+      <Filter>src_algorithms\src_dsn</Filter>
+    </ClInclude>
+    <ClInclude Include="src_algorithms\src_dsn\MST.h">
+      <Filter>src_algorithms\src_dsn</Filter>
+    </ClInclude>
+    <ClInclude Include="src_algorithms\src_dsn\Grid.h">
+      <Filter>src_algorithms\src_dsn</Filter>
+    </ClInclude>
+    <ClInclude Include="src_algorithms\src_dsn\RoutingNode.h">
+      <Filter>src_algorithms\src_dsn</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="src_uiDesign\GeoDisplay.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{00BF6892-F1C7-4235-A31E-7F373D248E05}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+    <ProjectName>PTreeRouting</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtDeploy>false</QtDeploy>
+    <QtDeployDebugRelease>false</QtDeployDebugRelease>
+    <QtDeployDir>$(OutDir)\qt</QtDeployDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+    <QtDeploy>false</QtDeploy>
+    <QtDeployDebugRelease>false</QtDeployDebugRelease>
+    <QtDeployDir>$(OutDir)\qt</QtDeployDir>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <IncludePath>$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src_algorithms\src_basics\dataStructAlg.cpp" />
+    <ClCompile Include="src_algorithms\src_basics\utils.cpp" />
+    <ClCompile Include="src_algorithms\src_dsn\RouterMeshless.cpp" />
+    <ClCompile Include="src_algorithms\src_dsn\MST.cpp" />
+    <ClCompile Include="src_baseClasses\dataStructUI.cpp" />
+    <ClCompile Include="src_baseClasses\TabPage.cpp" />
+    <ClCompile Include="src_config\configUI.cpp" />
+    <ClCompile Include="src_config\DiagramStyle.cpp" />
+    <ClCompile Include="src_paint\Diagram.cpp" />
+    <ClCompile Include="src_paint\TabPageRegister.cpp" />
+    <ClCompile Include="src_paint\TabPage_dsn\AlgorithmLink\AlgorithmLink_dsn.cpp" />
+    <ClCompile Include="src_paint\TabPage_dsn\DataParser_dsn.cpp" />
+    <ClCompile Include="src_paint\TabPage_dsn\TabPage_dsn.cpp" />
+    <ClCompile Include="src_uiDesign\GeoDisplay.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src_uiDesign\OptionsPanel.cpp" />
+    <ClCompile Include="src_uiDesign\setupTabWidget.cpp" />
+    <ClCompile Include="src_uiDesign\setupMenuBar.cpp" />
+    <ClCompile Include="src_uiDesign\setupOptionPanel.cpp" />
+    <ClCompile Include="src_uiDesign\setupToolBar.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="src_uiDesign\GeoDisplay.ui" />
+    <QtUic Include="src_uiDesign\OptionsPanel.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src_uiDesign\GeoDisplay.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="src_uiDesign\GeoDisplay.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src_uiDesign\OptionsPanel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src_algorithms\src_basics\dataStructAlg.h" />
+    <ClInclude Include="src_algorithms\src_basics\utils.h" />
+    <ClInclude Include="src_algorithms\src_dsn\Grid.h" />
+    <ClInclude Include="src_algorithms\src_dsn\RouterMeshless.h" />
+    <ClInclude Include="src_algorithms\src_dsn\MST.h" />
+    <ClInclude Include="src_algorithms\src_dsn\RoutingNode.h" />
+    <ClInclude Include="src_baseClasses\Data.h" />
+    <ClInclude Include="src_baseClasses\DataParser.h" />
+    <ClInclude Include="src_baseClasses\dataStructUI.h" />
+    <ClInclude Include="src_paint\TabPage_dsn\AlgorithmLink\AlgorithmLink_dsn.h" />
+    <ClInclude Include="src_paint\TabPage_dsn\Style_dsn.h" />
+    <QtMoc Include="src_baseClasses\TabPage.h" />
+    <ClInclude Include="src_baseClasses\DiagramData.h" />
+    <QtMoc Include="src_config\configUI.h" />
+    <QtMoc Include="src_paint\Diagram.h" />
+    <ClInclude Include="src_config\DiagramStyle.h" />
+    <ClInclude Include="src_paint\TabPage_dsn\DataParser_dsn.h" />
+    <ClInclude Include="src_paint\TabPage_dsn\Data_dsn.h" />
+    <QtMoc Include="src_paint\TabPage_dsn\TabPage_dsn.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
