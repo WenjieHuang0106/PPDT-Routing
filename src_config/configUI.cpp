@@ -12,12 +12,30 @@ void ConfigUI::configUpdate(const QString& qFilePath, const QString& qFileName) 
 }
 
 bool ConfigUI::read_config() {
-	QFile file("src_config/config.config");
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::warning(nullptr, tr("警告："), tr("读取配置文件失败！"));
+	QString configPath = "src_config/config.config";
+	QString defaultPath = "src_config/config_default.config";
+	QFile configFile(configPath);
+	// 配置文件不存在，则用默认配置创建一个配置文件
+	if (!configFile.exists()) {
+		QFile defaultFile(defaultPath);
+		if (!defaultFile.exists()) {
+			QMessageBox::warning(nullptr, tr("警告："),
+				tr("默认配置文件缺失：\n%1").arg(defaultPath));
+			return false;
+		}
+		if (!defaultFile.copy(configPath)) {
+			QMessageBox::warning(nullptr, tr("警告："),
+				tr("无法创建配置文件：\n%1").arg(configPath));
+			return false;
+		}
+	}
+	// 正常读取配置文件
+	if (!configFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::warning(nullptr, tr("警告："),
+			tr("读取配置文件失败！"));
 		return false;
 	}
-	QTextStream in(&file);
+	QTextStream in(&configFile);
 	in.setAutoDetectUnicode(true); // 自动检测UTF-BOM
 	while (!in.atEnd()) {
 		QString line = in.readLine().trimmed();
@@ -82,7 +100,7 @@ bool ConfigUI::read_config() {
 			continue;
 		}
 	}
-	file.close();
+	configFile.close();
 	return true;
 }
 bool ConfigUI::write_config()const {
