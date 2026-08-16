@@ -34,19 +34,6 @@ void GeoDisplay::action_open() {
 		"文本文件 (*.txt);;"
 		"图片 (*.png *.jpg)";
 
-	// 一次只能打开一个文件
-	//QString file = QFileDialog::getOpenFileName(
-	//	this,
-	//	"打开文件",
-	//	m_config->m_qFilePath,
-	//	fileFilter
-	//);
-	//if (file.isEmpty())
-	//	return;
-	//addTabWidget(file);
-
-
-	/**/
 	//一次打开多个文件
 	QStringList files = QFileDialog::getOpenFileNames(
 		this,
@@ -60,7 +47,6 @@ void GeoDisplay::action_open() {
 	for (const QString& file : files) {
 		addTabWidget(file);
 	}
-	/**/
 }
 
 void GeoDisplay::action_add() {
