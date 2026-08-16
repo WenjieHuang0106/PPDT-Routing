@@ -1,4 +1,4 @@
-﻿# include "utils.h"
+# include "utils.h"
 
 using namespace std;
 
@@ -280,9 +280,9 @@ bool isEncloseGraph(vector<Line> lines) {
 	Line tempLine;
 	vector<Point> vertexPoint;  //顶点
 	//Init
-	linesSize = lines.size();
+	linesSize = static_cast<int>(lines.size());
 
-	for (int i = 0; i < lines.size(); ++i) {
+	for (int i = 0; i < static_cast<int>(lines.size()); ++i) {
 		tempLine = lines[i];
 		newPoint = pointInPointsVec(tempLine.Pt1, vertexPoint);
 		if (!newPoint) {

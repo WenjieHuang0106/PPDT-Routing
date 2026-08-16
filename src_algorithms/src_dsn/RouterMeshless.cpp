@@ -115,7 +115,7 @@ void RouterMeshless::run(vector<string>& routingInfo) {
 	m_curPathIndex = 0;
 	m_pathFoundNum = 0;
 	m_DRCCnt = 0;
-	m_serchTimesLimit = pathSum * 7;
+	m_serchTimesLimit = static_cast<int>(pathSum * 7);
 	if (m_serchTimesLimit < 2000)
 		m_serchTimesLimit = 2000;
 	// 4.提取特殊网表如GND,VCC等(暂未实现VCC)
@@ -184,7 +184,7 @@ void RouterMeshless::run(vector<string>& routingInfo) {
 	snprintf(buf, sizeof(buf), "%.2f%%", ratePinPairs);
 	routingInfo.emplace_back(buf);
 
-	snprintf(buf, sizeof(buf), "%.2f%", avgLen);
+	snprintf(buf, sizeof(buf), "%.2f%%", avgLen);
 	routingInfo.emplace_back(buf);
 
 	snprintf(buf, sizeof(buf), "%d", m_treeNodesSum);
@@ -782,7 +782,7 @@ bool RouterMeshless::runPPDT() {
 		if (pathFound)//找到路径，跳出循环
 			break;
 	}
-	m_treeNodesSum += m_exploredNodes.size();
+	m_treeNodesSum += static_cast<int>(m_exploredNodes.size());
 	//4回溯，生成路径
 	if (pathFound) {
 		//回溯，后处理（回溯引脚更新）

@@ -5,15 +5,36 @@ PointStyle* DiagramStyleManager::getPointStyle(const QString& key){
 		return &m_pointStyles[key];
 	return &m_pointStyles[""];
 };
+const PointStyle* DiagramStyleManager::getPointStyle(const QString& key) const {
+	auto it = m_pointStyles.constFind(key);
+	if (it != m_pointStyles.constEnd())
+		return &it.value();
+	it = m_pointStyles.constFind(QStringLiteral(""));
+	return &it.value();
+};
 LineStyle* DiagramStyleManager::getLineStyle(const QString& key) {
 	if (m_lineStyles.contains(key))
 		return &m_lineStyles[key];
 	return &m_lineStyles[""];
 };
+const LineStyle* DiagramStyleManager::getLineStyle(const QString& key) const {
+	auto it = m_lineStyles.constFind(key);
+	if (it != m_lineStyles.constEnd())
+		return &it.value();
+	it = m_lineStyles.constFind(QStringLiteral(""));
+	return &it.value();
+};
 PolygonStyle* DiagramStyleManager::getPolygonStyle(const QString& key) {
 	if (m_polygonStyles.contains(key))
 		return &m_polygonStyles[key];
 	return &m_polygonStyles[""];
+};
+const PolygonStyle* DiagramStyleManager::getPolygonStyle(const QString& key) const {
+	auto it = m_polygonStyles.constFind(key);
+	if (it != m_polygonStyles.constEnd())
+		return &it.value();
+	it = m_polygonStyles.constFind(QStringLiteral(""));
+	return &it.value();
 };
 
 //设置样式

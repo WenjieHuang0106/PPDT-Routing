@@ -3,6 +3,8 @@
 #include "../src_config/AppConfig.h"
 #include "../src_algorithms/src_dsn/MST.h"  // 层感知斯坦纳树
 #include "../src_algorithms/src_dsn/RouterMeshless.h"				// PDT算法
+#include <QString>
+#include <QTextStream>
 #include <string>
 
 using namespace std;

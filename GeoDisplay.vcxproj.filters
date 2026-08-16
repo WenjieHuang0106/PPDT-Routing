@@ -48,6 +48,12 @@
     <Filter Include="src_algorithms\src_dsn">
       <UniqueIdentifier>{43ac68c8-18f1-4e77-906b-ecafc37d109d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src_db">
+      <UniqueIdentifier>{dbbase-0000-1111-2222-000000000001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_db\dsn">
+      <UniqueIdentifier>{dbbase-0000-1111-2222-000000000002}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src_config\AppConfig.cpp">
@@ -59,8 +65,17 @@
     <ClCompile Include="src_data\dataStructUI.cpp">
       <Filter>src_data</Filter>
     </ClCompile>
+    <ClCompile Include="src_data\dsn\Data_dsn.cpp">
+      <Filter>src_data\dsn</Filter>
+    </ClCompile>
     <ClCompile Include="src_data\dsn\DataParser_dsn.cpp">
       <Filter>src_data\dsn</Filter>
+    </ClCompile>
+    <ClCompile Include="src_db\dbIO.cpp">
+      <Filter>src_db</Filter>
+    </ClCompile>
+    <ClCompile Include="src_db\dsn\dbParser_dsn.cpp">
+      <Filter>src_db\dsn</Filter>
     </ClCompile>
     <ClCompile Include="src_paint\Diagram.cpp">
       <Filter>src_paint</Filter>
@@ -179,6 +194,27 @@
     </ClInclude>
     <ClInclude Include="src_data\dsn\Style_dsn.h">
       <Filter>src_data\dsn</Filter>
+    </ClInclude>
+    <ClInclude Include="src_db\dbDataBase.h">
+      <Filter>src_db</Filter>
+    </ClInclude>
+    <ClInclude Include="src_db\dbIO.h">
+      <Filter>src_db</Filter>
+    </ClInclude>
+    <ClInclude Include="src_db\dbParserBase.h">
+      <Filter>src_db</Filter>
+    </ClInclude>
+    <ClInclude Include="src_db\dbPoint.h">
+      <Filter>src_db</Filter>
+    </ClInclude>
+    <ClInclude Include="src_db\dbString.h">
+      <Filter>src_db</Filter>
+    </ClInclude>
+    <ClInclude Include="src_db\dsn\dbData_dsn.h">
+      <Filter>src_db\dsn</Filter>
+    </ClInclude>
+    <ClInclude Include="src_db\dsn\dbParser_dsn.h">
+      <Filter>src_db\dsn</Filter>
     </ClInclude>
     <ClInclude Include="src_paint\DiagramStyle.h">
       <Filter>src_paint</Filter>

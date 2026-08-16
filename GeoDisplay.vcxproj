@@ -117,7 +117,10 @@
     <ClCompile Include="src_config\AppConfig.cpp" />
     <ClCompile Include="src_config\ConfigManager.cpp" />
     <ClCompile Include="src_data\dataStructUI.cpp" />
+    <ClCompile Include="src_data\dsn\Data_dsn.cpp" />
     <ClCompile Include="src_data\dsn\DataParser_dsn.cpp" />
+    <ClCompile Include="src_db\dbIO.cpp" />
+    <ClCompile Include="src_db\dsn\dbParser_dsn.cpp" />
     <ClCompile Include="src_paint\Diagram.cpp" />
     <ClCompile Include="src_paint\DiagramStyle.cpp" />
     <ClCompile Include="src_paint\TabPageBase.cpp" />
@@ -165,6 +168,13 @@
     <ClInclude Include="src_data\dsn\Data_dsn.h" />
     <ClInclude Include="src_data\dsn\DataParser_dsn.h" />
     <ClInclude Include="src_data\dsn\Style_dsn.h" />
+    <ClInclude Include="src_db\dbDataBase.h" />
+    <ClInclude Include="src_db\dbIO.h" />
+    <ClInclude Include="src_db\dbParserBase.h" />
+    <ClInclude Include="src_db\dbPoint.h" />
+    <ClInclude Include="src_db\dbString.h" />
+    <ClInclude Include="src_db\dsn\dbData_dsn.h" />
+    <ClInclude Include="src_db\dsn\dbParser_dsn.h" />
     <ClInclude Include="src_paint\DiagramStyle.h" />
     <ClInclude Include="src_panels\PanelManager.h" />
     <ClInclude Include="src_services\RoutingController.h" />

@@ -75,10 +75,19 @@ AppConfig* ConfigManager::bootstrap() {
         }
     }
 
-    // 4. 读 app_last.config；缺失 → 从 app.config 复制
+    // 4. 读 app_last.config；缺失 → 从 app.config 复制；复制失败 → 直接从内置模板写出
     QFile lastFile("config/app_last.config");
     if (!lastFile.exists()) {
-        appConfigFile.copy("config/app_last.config");
+        bool copied = appConfigFile.copy("config/app_last.config");
+        if (!copied) {
+            // 兜底：app.config 可能刚写出还在异常状态，直接写一份内置模板到 app_last.config
+            QFile lastFallback("config/app_last.config");
+            if (lastFallback.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                QTextStream out(&lastFallback);
+                out << kAppConfigTemplate;
+                lastFallback.close();
+            }
+        }
     }
 
     // 5. mkpath configPath 确保个人配置目录存在
@@ -107,9 +116,17 @@ AppConfig* ConfigManager::bootstrap() {
     }
 
     // 7. 创建 AppConfig，加载并返回（由本单例内部持有）
+    //    无论 read() 成功与否，程序都不会崩：
+    //    - read() 返回 true：正常使用文件里的配置
+    //    - read() 返回 false：使用 AppConfig.h 里类内初始化的默认值
+    //      并且立刻把当前默认值 save 回 config/app_last.config，确保下次启动就能读到有效文件
     m_config = std::make_unique<AppConfig>();
     m_config->setFilePath("config/app_last.config");
-    m_config->read();
+    bool readOk = m_config->read();
+    if (!readOk) {
+        // 兜底：立即用当前（默认值）写出一个有效的 app_last.config
+        saveLast(m_config.get());
+    }
     m_configPath = configPath;
     return m_config.get();
 }

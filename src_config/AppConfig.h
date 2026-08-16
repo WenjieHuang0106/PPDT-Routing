@@ -54,13 +54,13 @@ public:
 
 	int m_directionOp = 2;			//0无，1四方向，2八方向
 	int m_gridType = 0;				//0无网格，1线形网格，2点形网格
-	int m_postMode = 1;
-	int m_pushRunMode = 1;			//0.Off,1.Block
+	int m_postMode = 2;
+	int m_pushRunMode = 0;			//0.Off,1.Block
 
 	float m_minimalScreenGridSize = 16;
 	float m_gridSize = 0;
 
-	int m_showTreeIndex = -1;
+	int m_showTreeIndex = 0;
 
 	//5.自定义的输入数据
 	QString m_flexibleOpt = "";		//UI界面输入的字符串，可以代表不同模式选项等

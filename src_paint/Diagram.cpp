@@ -6,6 +6,14 @@
 #include <memory>
 #include <QMessageBox>
 #include <QPainterPath>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QMouseEvent>
+#include <QWheelEvent>
+#include <QShowEvent>
+#include <QResizeEvent>
+#include <QTimerEvent>
+#include <QEvent>
 
 using namespace std;
 
@@ -291,7 +299,7 @@ void Diagram::drawSegments3(QPainter& painter) {
 }
 
 //3.绘制元素
-void Diagram::drawLines(std::vector<LineUI>* lines, LineStyle* s, QPainter& painter) {
+void Diagram::drawLines(std::vector<LineUI>* lines, const LineStyle* s, QPainter& painter) {
 	// 设置线条属性
 	QPen pen(s->m_color);
 	pen.setWidthF(s->m_width);
@@ -322,7 +330,7 @@ void Diagram::drawLines(std::vector<LineUI>* lines, LineStyle* s, QPainter& pain
 		}
 	}
 }
-void Diagram::drawPoints(std::vector<QPointF>* pts, PointStyle* s, QPainter& painter) {
+void Diagram::drawPoints(std::vector<QPointF>* pts, const PointStyle* s, QPainter& painter) {
 	painter.save();
 	// 设置点属性
 	if (s->m_fill) 			// 设置填充
@@ -357,7 +365,7 @@ void Diagram::drawPoints(std::vector<QPointF>* pts, PointStyle* s, QPainter& pai
 	}
 	painter.restore();
 }
-void Diagram::drawPolygons(std::vector<LineUI>* lines, PolygonStyle* s, QPainter& painter) {
+void Diagram::drawPolygons(std::vector<LineUI>* lines, const PolygonStyle* s, QPainter& painter) {
 	if (lines->empty()) return;
 	// 设置多边形填充(暂未实现)
 	if (s->m_fill) {
@@ -393,7 +401,7 @@ void Diagram::drawPolygons(std::vector<LineUI>* lines, PolygonStyle* s, QPainter
 		}
 	}
 }
-void Diagram::drawLinePoints(std::vector<LineUI>* lines, PointStyle* s, QPainter& painter) {
+void Diagram::drawLinePoints(std::vector<LineUI>* lines, const PointStyle* s, QPainter& painter) {
 	// 设置端点属性
 	if (s->m_fill) 			// 设置填充
 		painter.setBrush(QBrush(s->m_fillColor));
@@ -417,7 +425,7 @@ void Diagram::drawLinePoints(std::vector<LineUI>* lines, PointStyle* s, QPainter
 		}
 	}
 }
-void Diagram::drawCircles(std::vector<CircleUI>* circles, PolygonStyle* s, QPainter& painter) {
+void Diagram::drawCircles(std::vector<CircleUI>* circles, const PolygonStyle* s, QPainter& painter) {
 	if (circles->empty()) return;
 	if (s->m_fill) 			// 设置填充
 		painter.setBrush(QBrush(s->m_fillColor));
@@ -550,6 +558,14 @@ bool Diagram::clipLine(LineUI& line, const QRectF& viewport) const {
 bool Diagram::clipPt(const QPointF& p1, const QRectF& viewport) const {
 	if (p1.x() < viewport.left() || p1.x() > viewport.right() ||
 		p1.y() < viewport.top() || p1.y() > viewport.bottom()) {
+		return false;
+	}
+	return true;
+}
+bool Diagram::clipPt(const QPointF& p1, const QRectF& viewport, qreal tolData) const {
+	// 对点/圆/焊盘做"带容差"的裁剪，避免图元仍有可见部分时被直接剔除
+	if (p1.x() < viewport.left()   - tolData || p1.x() > viewport.right()  + tolData ||
+		p1.y() < viewport.top()    - tolData || p1.y() > viewport.bottom() + tolData) {
 		return false;
 	}
 	return true;
@@ -785,7 +801,7 @@ void Diagram::moveCanvasEnd(const QPoint& releasePos) {
 
 // 吸附阈值（数据坐标系）
 template<typename DataType, typename StyleType>
-bool Diagram::selectTarget(const QPointF& posPt, const bool& hover, std::vector<DataType*>& dataVector, std::vector<StyleType*>& styleVector) {
+bool Diagram::selectTarget(const QPointF& posPt, const bool& hover, std::vector<DataType*>& dataVector, std::vector<const StyleType*>& styleVector) {
 	for (int i = 0; i < styleVector.size(); i++) {
 		if (setSelections(posPt, hover, dataVector[i], styleVector[i])) {
 			return true;
@@ -793,11 +809,11 @@ bool Diagram::selectTarget(const QPointF& posPt, const bool& hover, std::vector<
 	}
 	return false;
 }
-bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vector<QPointF>* candidates, PointStyle* s) {
+bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vector<QPointF>* candidates, const PointStyle* s) {
 	if (s->m_type <= 0 || !s->isVisible()) {
 		return false;
 	}
-	double snapThreshold = m_snapThresholdPixels / m_scaleFactor;
+	double snapThreshold = snapThresholdData();
 	if (s->m_type <= 1000 || (s->m_type > 2000 && s->m_type <= 3000) || (s->m_type == 6001 && hover)) {	// 都可选择
 		//将m_wires设置为推挤线
 		bool selected = setSelectedPt(clickPt, *candidates, snapThreshold);
@@ -808,11 +824,11 @@ bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vect
 	}
 	return false;
 }
-bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, LineStyle* s) {
+bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, const LineStyle* s) {
 	if (s->m_type <= 0 || !s->isVisible()) {
 		return false;
 	}
-	double snapThreshold = m_snapThresholdPixels / m_scaleFactor;
+	double snapThreshold = snapThresholdData();
 	bool selected = false;
 	if (s->m_type <= 1000 || (s->m_type == 6001 && hover)) {		// 都可选择
 		selected = setSelectedPt(clickPt, *candidates, snapThreshold);
@@ -833,11 +849,11 @@ bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vect
 	}
 	return false;
 }
-bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, PolygonStyle* s) {
+bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, const PolygonStyle* s) {
 	if (s->m_type <= 0 || !s->isVisible()) {
 		return false;
 	}
-	double snapThreshold = m_snapThresholdPixels / m_scaleFactor;
+	double snapThreshold = snapThresholdData();
 	bool selected = false;
 	if (s->m_type <= 1000 || (s->m_type == 6001 && hover)) {		// 都可选择
 		selected = setSelectedPt(clickPt, *candidates, snapThreshold);
@@ -858,11 +874,11 @@ bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vect
 	}
 	return false;
 }
-bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, PointStyle* s) {
+bool Diagram::setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, const PointStyle* s) {
 	if (s->m_type <= 0 || !s->isVisible()) {
 		return false;
 	}
-	double snapThreshold = m_snapThresholdPixels / m_scaleFactor;
+	double snapThreshold = snapThresholdData();
 	bool selected = false;
 	if (s->m_type <= 1000 || (s->m_type > 2000 && s->m_type <= 3000) || (s->m_type == 6001 && hover)) {		// 都可选择
 		selected = setSelectedPt(clickPt, *candidates, snapThreshold);
@@ -949,7 +965,7 @@ bool Diagram::setSelectedLine(const QPointF& clickPt, const LineUI& line, double
 	const QPointF p2 = line.p2();
 	// 处理零长度线段
 	if (p1 == p2) {
-		if (sqrt(pow(clickPt.x() - p1.x(), 2) + pow(clickPt.y() - p1.y(), 2)) < const_minValue);
+		(void)clickPt;
 		return false;
 	}
 	// 向量计算
@@ -977,6 +993,7 @@ bool Diagram::setSelectedLine(const QPointF& clickPt, const LineUI& line, double
 		m_slLine.showInfo = true;
 		return true;
 	}
+	(void)pinMinDist;
 	return false;
 }
 bool Diagram::setSelectedLine(const QPointF& clickPt, vector<LineUI>& lines, double snapThreshold) {

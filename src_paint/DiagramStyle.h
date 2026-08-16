@@ -141,8 +141,11 @@ public:
 	~DiagramStyleManager() = default;
 
 	// 获取样式
+	const PointStyle* getPointStyle(const QString& key) const;
 	PointStyle* getPointStyle(const QString& key);
+	const LineStyle* getLineStyle(const QString& key) const;
 	LineStyle* getLineStyle(const QString& key);
+	const PolygonStyle* getPolygonStyle(const QString& key) const;
 	PolygonStyle* getPolygonStyle(const QString& key);
 
 	//设置样式

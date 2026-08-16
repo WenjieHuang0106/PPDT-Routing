@@ -1,0 +1,187 @@
+# ==============================================================================
+#  cmake/RunWindeployQt.cmake.in  ->  configured into <build>/RunWindeployQt_<target>.cmake
+#
+#  Invoked from a POST_BUILD custom command like:
+#      cmake -D CONFIG=$<CONFIG>
+#            -D TARGET_FILE=$<TARGET_FILE:PTreeRouting>
+#            -P <configured_script>.cmake
+#
+#  TARGET_FILE is the ONLY reliable path: when CMAKE_RUNTIME_OUTPUT_DIRECTORY
+#  is set to e.g. build/bin (multi-config generator -> VS creates per-config
+#  subdirectory bin/Debug or bin/Release automatically), any manual string
+#  concatenation of "<dir>/${CONFIG}/project.exe" is extremely fragile and
+#  likely to mismatch one directory level, which in turn causes the script to
+#  think "the .exe doesn't exist -> POST_BUILD ran before linker" and emit
+#  a FATAL_ERROR that stops MSBuild (MSB3073).
+#
+#  Using $<TARGET_FILE:PTreeRouting> lets MSBuild / CMake decide where the
+#  linker dropped the .exe for the active config, so the path is always right.
+# ==============================================================================
+
+cmake_minimum_required(VERSION 3.20)
+
+# ---- Sanity checks - every variable must be defined by the caller ---------
+foreach(_VAR IN ITEMS CONFIG TARGET_FILE)
+    if(NOT DEFINED ${_VAR})
+        message(FATAL_ERROR "RunWindeployQt.cmake: -D ${_VAR}=... is required on the cmake -P command line")
+    endif()
+endforeach()
+
+# TARGET_FILE already has the absolute path WITH the correct per-config sub-dir.
+# Derive _EXE_DIR as the folder that actually contains the produced .exe.
+set(_EXE     "${TARGET_FILE}")
+get_filename_component(_EXE_DIR "${_EXE}" DIRECTORY)
+set(_WD      "@RUN_WINDEPLOYQT_EXECUTABLE@")
+
+message(STATUS "POST_BUILD: windeployqt -- CONFIG=${CONFIG}")
+message(STATUS "POST_BUILD: target EXE = ${_EXE}")
+message(STATUS "POST_BUILD: exe folder = ${_EXE_DIR}")
+message(STATUS "POST_BUILD: windeployqt = ${_WD}")
+
+if(NOT EXISTS "${_EXE}")
+    # If TARGET_FILE was passed from $<TARGET_FILE:PTreeRouting>, the only way
+    # this can happen is the user accidentally running the script manually
+    # with a stale/incorrect TARGET_FILE path. The POST_BUILD ordering is
+    # guaranteed by MSBuild (PostBuildEvent runs after Link target).
+    message(FATAL_ERROR
+        "RunWindeployQt.cmake: target executable does not exist at:\n"
+        "    ${_EXE}\n"
+        "If you launched this script by hand, please double-check -D TARGET_FILE.\n"
+        "If this came from POST_BUILD, the build may have stopped during the\n"
+        "linker step (check the build log right above for link errors).\n"
+        "Note: this is NOT a build ordering problem for multi-config generators\n"
+        "like Visual Studio - CMake inserts POST_BUILD into the PostBuildEvent\n"
+        "MSBuild target which strictly depends on Link producing the EXE."
+    )
+endif()
+
+if(NOT EXISTS "${_WD}")
+    message(WARNING
+        "\n"
+        " ##################################################################\n"
+        "  windeployqt.exe is missing at:\n"
+        "    ${_WD}\n"
+        "  Qt runtime DLLs and platforms\\qwindows.dll will NOT be copied to\n"
+        "  the .exe directory, so the program will fail to start with the\n"
+        "  usual \"Qt6Core.dll not found\" box.\n"
+        "\n"
+        "  Fix: re-run configure.bat after correcting CMAKE_PREFIX_PATH so\n"
+        "  it points at a complete Qt kit (bin/ lib/ plugins/ all present).\n"
+        "  Manual fallback: run\n"
+        "    <Qt>\\bin\\windeployqt.exe --<debug|release> ${_EXE}\n"
+        "  in a cmd window.\n"
+        " ##################################################################\n"
+    )
+    return()
+endif()
+
+# ---- Choose the CLI flag ---------------------------------------------------
+set(_FLAG "")
+if(CONFIG STREQUAL "Debug")
+    set(_FLAG "--debug")
+elseif(CONFIG STREQUAL "Release" OR CONFIG STREQUAL "RelWithDebInfo" OR CONFIG STREQUAL "MinSizeRel")
+    set(_FLAG "--release")
+else()
+    message(WARNING "Unknown CONFIG=${CONFIG}, passing no --debug/--release flag to windeployqt.")
+endif()
+
+# ---- Step 1.  Remove stale Qt artifacts from the EXE directory -------------
+#      Users often toggle Release <-> Debug builds without wiping build/, so
+#      leftover Qt DLLs from the opposite build-type cause misleading errors.
+file(GLOB _STALE_QT_DLLS
+    LIST_DIRECTORIES false
+    "${_EXE_DIR}/Qt6*.dll"
+    "${_EXE_DIR}/Qt5*.dll"
+)
+if(_STALE_QT_DLLS)
+    message(STATUS "POST_BUILD: removing stale Qt DLLs from EXE dir to avoid Release/Debug mix-ups ...")
+    foreach(_F ${_STALE_QT_DLLS})
+        message(STATUS "    deleting ${_F}")
+    endforeach()
+    file(REMOVE ${_STALE_QT_DLLS})
+endif()
+
+foreach(_DIR platforms styles imageformats iconengines tls networkinformation)
+    if(IS_DIRECTORY "${_EXE_DIR}/${_DIR}")
+        message(STATUS "POST_BUILD: removing stale plugin dir ${_DIR}")
+        file(REMOVE_RECURSE "${_EXE_DIR}/${_DIR}")
+    endif()
+endforeach()
+
+# ---- Step 2.  Run windeployqt ----------------------------------------------
+message(STATUS "POST_BUILD: ${_WD} ${_FLAG} --no-translations --no-system-d3d-compiler --no-opengl-sw \"${_EXE}\"")
+execute_process(
+    COMMAND "${_WD}" ${_FLAG}
+        --no-translations
+        --no-system-d3d-compiler
+        --no-opengl-sw
+        "${_EXE}"
+    RESULT_VARIABLE _RC
+    OUTPUT_VARIABLE _OUT
+    ERROR_VARIABLE  _ERR
+    COMMAND_ECHO STDOUT
+)
+if(NOT _RC EQUAL 0)
+    message(WARNING
+        "windeployqt exited with code ${_RC}\n"
+        "--- stdout ---\n${_OUT}\n--- stderr ---\n${_ERR}\n"
+    )
+endif()
+
+# ---- Step 3.  Verify the most important Qt DLLs + platforms plugin ---------
+if(CONFIG STREQUAL "Debug")
+    set(_CORE_DLL "Qt6Cored.dll")
+    set(_GUI_DLL  "Qt6Guid.dll")
+    set(_WID_DLL  "Qt6Widgetsd.dll")
+    set(_PLUGIN   "platforms/qwindowsd.dll")
+else()
+    set(_CORE_DLL "Qt6Core.dll")
+    set(_GUI_DLL  "Qt6Gui.dll")
+    set(_WID_DLL  "Qt6Widgets.dll")
+    set(_PLUGIN   "platforms/qwindows.dll")
+endif()
+
+set(_MISSING "")
+foreach(_F IN ITEMS ${_CORE_DLL} ${_GUI_DLL} ${_WID_DLL})
+    if(NOT EXISTS "${_EXE_DIR}/${_F}")
+        list(APPEND _MISSING "${_F}")
+    endif()
+endforeach()
+if(NOT EXISTS "${_EXE_DIR}/${_PLUGIN}")
+    list(APPEND _MISSING "${_PLUGIN}")
+endif()
+
+if(_MISSING)
+    set(_MSG
+        "\n"
+        " ##################################################################\n"
+        "  POST_BUILD WARNING:  windeployqt completed but expected Qt\n"
+        "  runtime files are still missing from the .exe directory:\n"
+    )
+    foreach(_F ${_MISSING})
+        set(_MSG "${_MSG}    - ${_F}\n")
+    endforeach()
+    string(CONCAT _MSG "${_MSG}"
+        "  CONFIG=${CONFIG} -> expecting \"${_FLAG}\" flavor of Qt6 DLLs.\n"
+        "\n"
+        "  Most common reason (for Debug builds with the \"d\" suffix missing):\n"
+        "      Your Qt installation does NOT contain the Debug binaries. The\n"
+        "      default Qt installer now includes only Release DLLs for some\n"
+        "      kits; you must re-run Qt Maintenance Tool, select the installed\n"
+        "      Qt version, and tick the component called \"MSVC 2022 64-bit\"\n"
+        "      -> \"Debug Files\" / \"Debug Information Files\" before the\n"
+        "      Qt6Cored.dll / Qt6Widgetsd.dll set becomes available.\n"
+        "\n"
+        "  Second most common reason (for Release):\n"
+        "      CMAKE_PREFIX_PATH / QTDIR points at the *MinGW* kit of Qt (ABI\n"
+        "      mismatch) so windeployqt silently skips MSVC-flavored DLLs.\n"
+        "      Re-set the env var to the folder whose name contains \"msvc2022_64\".\n"
+        "\n"
+        "  After fixing either issue DELETE the build/ folder and re-run\n"
+        "  configure.bat + build.bat <Debug|Release>.\n"
+        " ##################################################################\n"
+    )
+    message(WARNING "${_MSG}")
+else()
+    message(STATUS "POST_BUILD: OK - Qt runtime files (${_CORE_DLL} + ${_PLUGIN}) verified next to .exe.")
+endif()

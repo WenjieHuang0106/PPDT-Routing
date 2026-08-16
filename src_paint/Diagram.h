@@ -44,32 +44,31 @@ private:
 
 	//1.背景层绘图信息(第一优先级绘制的内容)
 	std::vector<std::vector<QPointF>*> m_pts1;
-	std::vector<PointStyle*> m_ss_pts1;
+	std::vector<const PointStyle*> m_ss_pts1;
 	std::vector<std::vector<LineUI>*> m_lines1;
-	std::vector<LineStyle*> m_ss_lines1;
+	std::vector<const LineStyle*> m_ss_lines1;
 	std::vector<std::vector<LineUI>*> m_polys1;
-	std::vector<PolygonStyle*> m_ss_polys1;
+	std::vector<const PolygonStyle*> m_ss_polys1;
 	std::vector<std::vector<LineUI>*> m_linePts1;
-	std::vector<PointStyle*> m_ss_linePts1;
+	std::vector<const PointStyle*> m_ss_linePts1;
 	std::vector<std::vector<CircleUI>*> m_circle1;
-	std::vector<PolygonStyle*> m_ss_circle1;
+	std::vector<const PolygonStyle*> m_ss_circle1;
 
 	//2.前景层绘图信息(后绘制的内容，会将先绘制的内容挡住)
 	std::vector<std::vector<QPointF>*> m_pts2;
-	std::vector<PointStyle*> m_ss_pts2;
+	std::vector<const PointStyle*> m_ss_pts2;
 	std::vector<std::vector<LineUI>*> m_lines2;
-	std::vector<LineStyle*> m_ss_lines2;
+	std::vector<const LineStyle*> m_ss_lines2;
 	std::vector<std::vector<LineUI>*> m_polys2;
-	std::vector<PolygonStyle*> m_ss_polys2;
+	std::vector<const PolygonStyle*> m_ss_polys2;
 	std::vector<std::vector<LineUI>*> m_linePts2;
-	std::vector<PointStyle*> m_ss_linePts2;
+	std::vector<const PointStyle*> m_ss_linePts2;
 	std::vector<std::vector<CircleUI>*> m_circle2;
-	std::vector<PolygonStyle*> m_ss_circle2;
+	std::vector<const PolygonStyle*> m_ss_circle2;
 
-	//3.动态显示数据（通过下拉框选择是否显示）
 	int m_treeIndex = -1;
 	std::vector<std::vector<LineUI>*> m_lines3;
-	std::vector<LineStyle*> m_ss_lines3;
+	std::vector<const LineStyle*> m_ss_lines3;
 
 
 
@@ -82,6 +81,17 @@ private:	//########################## 绘图模块 ##########################
 	float m_scaleFactor = 1.0;	//缩放倍数，数据的实际坐标-->屏幕坐标
 	QPointF m_panOffset;		//缩放后的偏移量（屏幕坐标偏移量）
 	bool m_initialized = false;	//已完成视图初始化
+
+	//0.15 屏幕像素→数据单位换算（稳定的捕捉/裁剪容差基准，不随m_r变化）
+	qreal tolScreenPxPoint()   const { return 8.0; }   // 点/圆在屏幕上外扩的可视像素半径
+	qreal tolScreenPxCircle()  const { return 30.0; }  // 焊盘/过孔屏幕外扩像素半径
+	qreal tolScreenPxLine()    const { return 6.0; }   // 线条裁剪的屏幕外扩像素宽度
+	qreal tolDataPoint()  const { return tolScreenPxPoint()  / qMax<qreal>(1e-6, m_scaleFactor); }
+	qreal tolDataCircle() const { return tolScreenPxCircle() / qMax<qreal>(1e-6, m_scaleFactor); }
+	qreal tolDataLine()   const { return tolScreenPxLine()   / qMax<qreal>(1e-6, m_scaleFactor); }
+
+	// 捕捉：使用统一的屏幕像素阈值转换为数据阈值，不依赖显示半径 m_r
+	double snapThresholdData() const { return m_snapThresholdPixels / qMax<qreal>(1e-6, m_scaleFactor); }
 
 	// 0.2  鼠标交互数据
 	bool m_targetSelected = false;
@@ -109,11 +119,11 @@ private:	//########################## 绘图模块 ##########################
 	void drawSegments2(QPainter& painter);
 	void drawSegments3(QPainter& painter);
 	//3.绘制点,线，多边形
-	void drawLines(std::vector<LineUI>* pts, LineStyle* s, QPainter& painter);
-	void drawPoints(std::vector<QPointF>* pts, PointStyle* s, QPainter& painter);
-	void drawPolygons(std::vector<LineUI>* lines, PolygonStyle* s, QPainter& painter);
-	void drawLinePoints(std::vector<LineUI>* lines, PointStyle* s, QPainter& painter);
-	void drawCircles(std::vector<CircleUI>* circles, PolygonStyle* s, QPainter& painter);
+	void drawLines(std::vector<LineUI>* pts, const LineStyle* s, QPainter& painter);
+	void drawPoints(std::vector<QPointF>* pts, const PointStyle* s, QPainter& painter);
+	void drawPolygons(std::vector<LineUI>* lines, const PolygonStyle* s, QPainter& painter);
+	void drawLinePoints(std::vector<LineUI>* lines, const PointStyle* s, QPainter& painter);
+	void drawCircles(std::vector<CircleUI>* circles, const PolygonStyle* s, QPainter& painter);
 
 	//4.坐标转换接口
 	QPointF dataToScreen(const QPointF& dataPoint) const;
@@ -125,6 +135,7 @@ private:	//########################## 绘图模块 ##########################
 	bool clipLine(QPointF& p1, QPointF& p2, const QRectF& viewport) const;
 	bool clipLine(LineUI& line, const QRectF& viewport) const;
 	bool clipPt(const QPointF& pt, const QRectF& viewport) const;
+	bool clipPt(const QPointF& pt, const QRectF& viewport, qreal tolData) const;
 
 protected:	//########################## 事件管理 ##########################
 
@@ -163,12 +174,12 @@ private:	//########################## 事件执行 ##########################
 
 	//吸附阈值(数据坐标
 	template<typename DataType, typename StyleType>
-	bool selectTarget(const QPointF& hoverPt, const bool& hover, std::vector<DataType*>& dataVector, std::vector<StyleType*>& styleVector);
+	bool selectTarget(const QPointF& hoverPt, const bool& hover, std::vector<DataType*>& dataVector, std::vector<const StyleType*>& styleVector);
 
-	bool setSelections(const QPointF& clickPt, const bool& hover, std::vector<QPointF>* candidates, PointStyle* s);
-	bool setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, LineStyle* s);
-	bool setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, PolygonStyle* s);
-	bool setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, PointStyle* s);
+	bool setSelections(const QPointF& clickPt, const bool& hover, std::vector<QPointF>* candidates, const PointStyle* s);
+	bool setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, const LineStyle* s);
+	bool setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, const PolygonStyle* s);
+	bool setSelections(const QPointF& clickPt, const bool& hover, std::vector<LineUI>* candidates, const PointStyle* s);
 
 	bool setSelectedPt(const QPointF& clickPt, const std::vector<QPointF>& line, double snapThreshold);
 	bool setSelectedPt(const QPointF& clickPt, const LineUI& line, double snapThreshold);

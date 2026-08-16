@@ -1,4 +1,4 @@
-﻿#include "RoutingController.h"
+#include "RoutingController.h"
 #include "../src_algorithms/src_dsn/MST.h"
 #include <chrono>
 
@@ -47,7 +47,7 @@ void RoutingController::routingRunBegin() {
 	int pinsSum1 = (int)m_pads.size();
 	int pinsSum2 = 0;
 	for (const auto& [netName, net] : m_nets) {
-		pinsSum2 += net.size();
+		pinsSum2 += static_cast<int>(net.size());
 	}
 	cout << "Min:(" << static_cast<int>(ceil(m_bound[0])) << ", " << static_cast<int>(ceil(m_bound[1])) << "),"
 		<< "Max:(" << static_cast<int>(ceil(m_bound[2])) << ", " << static_cast<int>(ceil(m_bound[3])) << "),"
@@ -150,100 +150,110 @@ void RoutingController::dataInit() {
 	m_netsInfos.clear();
 	m_netTrees.clear();
 	m_flyLines.clear();
+
+	auto* db = m_data->dbData();
+	if (!db) {
+		qDebug() << "[RoutingController::dataInit] 内核数据为空(dbData()==nullptr)";
+		return;
+	}
+
 	// 1.设置边界
 	QPointF* minp = m_data->getMinPoint();
 	QPointF* maxp = m_data->getMaxPoint();
 	m_bound = { minp->x(), minp->y(), maxp->x(), maxp->y() };
-	// 2.填充m_viaInfos，从QSet<QString> m_dsnVias，即m_data->m_dsnVias中读取
-	for (const QString& viaName : m_data->m_dsnVias) {
-		const vector<Data_dsn::DSNShape>& shapes = m_data->m_dsnPads[viaName].shapes;
-		if (shapes.empty()) continue;
-		double radius = shapes[0].circle.radius;
-		vector<int> layers;
-		for (const Data_dsn::DSNShape& shape : shapes) {
-			layers.emplace_back(shape.layer);
-		}
-		m_viaInfos[viaName.toLatin1().constData()] = ViaInfo(radius, layers);
+
+	// 2.填充 m_viaInfos（直接从内核 std 容器取，无需 QString ↔ string 转换）
+	for (const std::string& viaName : db->m_viaDefs) {
+		auto it = db->m_pads.find(viaName);
+		if (it == db->m_pads.end() || it->second.shapes.empty()) continue;
+		const auto& shapes = it->second.shapes;
+		double radius = shapes[0].circleRadius;
+		std::vector<int> layers;
+		for (const auto& s : shapes) layers.push_back(s.layer);
+		m_viaInfos[viaName] = ViaInfo(radius, layers);
 	}
-	// 3.填充m_pads
-	double clear_default_smd = m_data->m_dsnRule["default_smd"];
-	for (auto it = m_data->m_dsnPins.begin(); it != m_data->m_dsnPins.end(); ++it) {
-		// 3.1设置焊盘坐标
-		QString qPinName = it.key();
-		string pinPadName(it.key().toLatin1().constData());
-		double pinX = it->x();
-		double pinY = it->y();
-		m_pads.insert(make_pair(pinPadName, PinPad(Point(pinX, pinY), pinPadName, "", clear_default_smd)));
+
+	// 3.填充 m_pads（直接用 std::string，消除 toLatin1 转换）
+	auto ruleIt = db->m_rules.find("default_smd");
+	double clear_default_smd = (ruleIt != db->m_rules.end()) ? ruleIt->second : 0.4;
+
+	for (const auto& [pinName, pinPos] : db->m_pins) {
+		// 3.1 焊盘坐标
+		const std::string& pinPadName = pinName;
+		double pinX = pinPos.x;
+		double pinY = pinPos.y;
+		m_pads.insert(std::make_pair(pinPadName,
+			PinPad(Point(pinX, pinY), pinPadName, "", clear_default_smd)));
 		PinPad& onePad = m_pads[pinPadName];
-		// 3.2设置焊盘的pad多边形
-		if (!m_data->m_dsnPins.contains(qPinName) || !m_data->m_dsnPinPads.contains(qPinName))
-			continue;
-		QString& padName = m_data->m_dsnPinPads[qPinName];
-		if (!m_data->m_dsnPads.contains(padName))
-			continue;
-		const vector<Data_dsn::DSNShape>& shapes = m_data->m_dsnPads[padName].shapes;
+
+		// 3.2 获取 pad
+		auto ppIt = db->m_pinPads.find(pinName);
+		if (ppIt == db->m_pinPads.end()) continue;
+		const std::string& padName = ppIt->second;
+		auto padsIt = db->m_pads.find(padName);
+		if (padsIt == db->m_pads.end()) continue;
+		const auto& shapes = padsIt->second.shapes;
 		if (shapes.empty()) {
-			qDebug() << "shapes is empty:" << padName;
+			qDebug() << "shapes is empty:" << QString::fromStdString(padName);
 			continue;
 		}
-		// 3.3先处理第一个shape的形状，后面都与第一个相同
-		const Data_dsn::DSNShape& shape0 = shapes[0];
-		vector<Line> edges;
-		double radius = -1;		// 如果是多边形，则保持-1，如果是圆，则更新为半径>0
-		if (shape0.shapeType == "polygon") {
-			double x1 = shape0.Pts[0].x(), y1 = shape0.Pts[0].y();
-			double x2 = shape0.Pts[1].x(), y2 = shape0.Pts[1].y();
-			size_t pointCount = shape0.Pts.size();
-			bool isClosed = (pointCount > 1 && shape0.Pts[0] == shape0.Pts[pointCount - 1]);
-			size_t effectivePointCount = isClosed ? pointCount - 1 : pointCount;
-			if (effectivePointCount < 2) continue;
-			for (size_t i = 0; i < effectivePointCount; ++i) {
-				size_t next_i = (i + 1) % effectivePointCount;
-				double x1 = shape0.Pts[i].x() + pinX;
-				double y1 = shape0.Pts[i].y() + pinY;
-				double x2 = shape0.Pts[next_i].x() + pinX;
-				double y2 = shape0.Pts[next_i].y() + pinY;
-				if (x1 == x2 && y1 == y2) {
-					continue;
-				}
-				Line line(Point(x1, y1), Point(x2, y2));
-				edges.emplace_back(line);
+		// 3.3 先处理第一个 shape（后面 shape 形状相同但 layer 不同）
+		using SType = db::dsn::Shape::Type;
+		const auto& shape0 = shapes[0];
+		std::vector<Line> edges;
+		double radius = -1;
+		if (shape0.type == SType::Polygon) {
+			size_t n = shape0.polyPts.size();
+			if (n < 2) continue;
+			bool closed = (n > 1 && shape0.polyPts.front() == shape0.polyPts.back());
+			size_t effN = closed ? n - 1 : n;
+			if (effN < 2) continue;
+			for (size_t k = 0; k < effN; ++k) {
+				size_t nk = (k + 1) % effN;
+				double x1 = shape0.polyPts[k].x + pinX;
+				double y1 = shape0.polyPts[k].y + pinY;
+				double x2 = shape0.polyPts[nk].x + pinX;
+				double y2 = shape0.polyPts[nk].y + pinY;
+				if (x1 == x2 && y1 == y2) continue;
+				edges.emplace_back(Line(Point(x1, y1), Point(x2, y2)));
+			}
+		} else if (shape0.type == SType::Circle) {
+			radius = shape0.circleRadius;
+			(void)shape0.circleCenter;  // 使用半径即可，PinPad::addShape 再传相对位置
+		}
+		// 3.4 每个 shape 构造一个 PinPad
+		if (radius > 0) {
+			for (const auto& s : shapes) {
+				onePad.addShape(s.layer, s.circleRadius,
+					Point(s.circleCenter.x, s.circleCenter.y));
+			}
+		} else {
+			for (const auto& s : shapes) {
+				onePad.addShape(s.layer, edges);
 			}
 		}
-		else if (shape0.shapeType == "circle") {
-			double x = shape0.circle.x() + pinX;
-			double y = shape0.circle.y() + pinY;
-			radius = shape0.circle.radius;
-		}
-		// 3.4每个shape形状相同，但layer不同，用形状和layer构造一个PinPad
-		if (radius > 0)
-			for (const Data_dsn::DSNShape& shape : shapes) {
-				onePad.addShape(shape.layer, shape.circle.radius, Point(shape.circle.x(), shape.circle.y()));
-			}
-		else
-			for (const Data_dsn::DSNShape& shape : shapes)
-				onePad.addShape(shape.layer, edges);
 	}
-	// 4.填充m_nets，m_net_vias
-	for (auto it = m_data->m_dsnNets.begin(); it != m_data->m_dsnNets.end(); ++it) {
-		string netName(it.key().toLatin1().constData());
-		//if (netName == "GND") continue;
-		vector<PinPad*> oneNet;
-		for (const QString& shapeName : it.value().PinsNames) {
-			PinPad* pad = &m_pads[shapeName.toLatin1().constData()];
+
+	// 4.填充 m_nets, m_netsInfos（直接用 std::string）
+	for (const auto& [netName, net] : db->m_nets) {
+		// if (netName == "GND") continue;
+		std::vector<PinPad*> oneNet;
+		for (const std::string& shapeName : net.pinNames) {
+			auto padIt = m_pads.find(shapeName);
+			if (padIt == m_pads.end()) continue;
+			PinPad* pad = &padIt->second;
 			pad->setNetName(netName);
-			oneNet.emplace_back(pad);
+			oneNet.push_back(pad);
 		}
 		m_nets[netName] = oneNet;
-		string viaName(it.value().via.toLatin1().constData());
-		m_netsInfos[netName] = NetInfo(viaName, it->width, it->clearance);
+		m_netsInfos[netName] = NetInfo(net.viaName, net.width, net.clearance);
 	}
+
 	// 5.如果该文件已完成布线，则统计布线长度
 	m_totalLenOfRoutedDsn = 0;
 	if (!m_data->m_paths.empty() && !m_data->m_paths.front().empty()) {
 		for (const auto& layer_paths : m_data->m_paths) {
 			for (const auto& line : layer_paths) {
-				// LineUI 继承自 QLineF，可以直接使用 length() 方法
 				m_totalLenOfRoutedDsn += line.length();
 			}
 		}
