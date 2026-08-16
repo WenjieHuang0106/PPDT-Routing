@@ -6,6 +6,8 @@
 
 github地址：https://github.com/WenjieHuang0106/PPDT-Routing.git
 
+如有疑问，欢迎加入QQ交流群：808099802，验证信息填github
+
 <img width="1502" height="944" alt="image" src="https://github.com/user-attachments/assets/ac2e65d4-fb67-4de8-b0d2-2fa176d9eb8a" />
 
 ---
