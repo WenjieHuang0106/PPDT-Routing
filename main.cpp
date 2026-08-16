@@ -1,4 +1,4 @@
-﻿#include "src_uiDesign/GeoDisplay.h"
+#include "src_ui/GeoDisplay.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])

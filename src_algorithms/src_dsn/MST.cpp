@@ -1,4 +1,5 @@
 #include "MST.h"
+#include "../src_basics/RouterFactory.h"
 
 #include <unordered_set>
 #include <queue>

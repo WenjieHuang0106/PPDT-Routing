@@ -1,7 +1,8 @@
-﻿#pragma once
+#pragma once
 #include "MST.h"
 #include "Grid.h"
 #include "RoutingNode.h"
+#include "../src_basics/RouterBase.h"
 #include <stack>
 #include <map>
 
@@ -11,7 +12,7 @@
 #include <condition_variable>
 #include <atomic>
 
-class RouterMeshless {
+class RouterMeshless : public RouterBase {
 public:
 	RouterMeshless()
 		:m_netTrees(nullptr), m_pads(nullptr), m_preVias(nullptr), m_viaInfos(nullptr), m_netsInfos(nullptr), m_nets(nullptr) {
@@ -44,29 +45,29 @@ public:
 			m_worker.join();
 		freePathsAndTrees();
 	};
-	void run(vector<string>& routingInfo);
-	void routerReset(double& gridSize);
+	void run(vector<string>& routingInfo) override;
+	void routerReset(double gridSize) override;
 
 	void pushAndUpdate(PathNode* pushNode, const Point& pushVec, PolyShape* shape);
 
 	void pushMoveLine(PathNode* node, const Point& offset, PolyShape* shape = nullptr);
-	bool checkBeforPush(PathNode* node, PolyShape* shape, PolyShape* shapeTmp, const Point& pushVec, bool setPath);
+	bool checkBeforPush(PathNode* node, PolyShape* shape, PolyShape* shapeTmp, const Point& pushVec, bool setPath) override;
 	bool copyAndCheckBeforPush(PathNode* pushNode, const Point& pushVec, PolyShape* shape);
 	bool pushMoveLineTmpToCheck(PathNode* nodeInputLock, const Point& offset, PolyShape* shapeTmp);
 
 
-	void pushLineDataUpdate(const PolyShape* shapeCopy, PolyShape* pathShape);
+	void pushLineDataUpdate(const PolyShape* shapeCopy, PolyShape* pathShape) override;
 	void addOnePathToGrid(PolyShape* shape) {
 		m_gridManager->addShapeLines(shape);
 	}
 	void removeOnePathFromGrid(PolyShape* shape) {
 		m_gridManager->removeOnePath(shape);
 	}
-	void setDirectionOpt(const int& directionOp) { m_directionOp = directionOp; };
+	void setDirectionOpt(int directionOp) override { m_directionOp = directionOp; };
 	void setGrideSizeFactor(const double& alpha_g) { m_grideSizeFactor = alpha_g; };
 	void setStandardCostFactor(const double& beta) { m_standardCostFactor = beta; };
 	void setDecayFactor(const double& eta) { m_decayFactor = eta; };
-	void setRouterOption(const vector<bool>& boolOps) {
+	void setRouterOption(const vector<bool>& boolOps) override {
 		size_t opNum = boolOps.size();
 		if (opNum > 0) m_postOn = boolOps[0];
 		if (opNum > 1) m_GNDRoute = boolOps[1];		// GND特殊线序
@@ -75,7 +76,7 @@ public:
 		if (opNum > 4) m_autoPush = boolOps[4];
 		if(opNum > 5) m_4_8Tree = boolOps[5];
 	};
-	void setDebugOpt(const string& flexibleOpt, const bool& breakFunOn, const Point& pt, int breakID) {
+	void setDebugOpt(const string& flexibleOpt, bool breakFunOn, const Point& pt, int breakID) override {
 		for (size_t i = 0; i < flexibleOpt.size(); ++i) {
 			char c = flexibleOpt[i];
 			bool value = (c != '0');  // 非'0'字符都为true，只有'0'为false
@@ -92,11 +93,11 @@ public:
 		m_beeakPt = pt;
 		m_breakIndex = breakID;
 	};
-	void setPushTimes(int pushTimes) { m_pushTimes = pushTimes; };
-	vector<PathTree*>* getTreesHeadsOrdered() { return &m_pathTreesOrdered; };
-	unordered_map<PathNode*, PolyShape>* getPaths() { return &m_paths; };
-	unordered_set<Point, Point::Hash>* getPlanningPts() { return &m_planningPts; };
-	unordered_map<Point, PinPad, Point::Hash>* getVias() { return &m_vias; };
+	void setPushTimes(int pushTimes) override { m_pushTimes = pushTimes; };
+	vector<PathTree*>* getTreesHeadsOrdered() override { return &m_pathTreesOrdered; };
+	unordered_map<PathNode*, PolyShape>* getPaths() override { return &m_paths; };
+	unordered_set<Point, Point::Hash>* getPlanningPts() override { return &m_planningPts; };
+	unordered_map<Point, PinPad, Point::Hash>* getVias() override { return &m_vias; };
 
 private:		//调试的数据
 	// 1.1算法执行选项
@@ -431,5 +432,16 @@ private:
 	bool segmentCoveredByAnyLine(const Point& a, const Point& b, const vector<Line>& linesOnSameLine) const;
 	double pointParamOnLine(const Point& origin, const Point& dirUnit, const Point& p) const;
 };
+
+// 自注册到 RouterFactory
+namespace detail {
+	struct RouterMeshlessRegistrar {
+		RouterMeshlessRegistrar() {
+			RouterFactory::instance().registerCreator("PPDT",
+				[]() { return std::unique_ptr<RouterBase>(new RouterMeshless()); });
+		}
+	};
+	static RouterMeshlessRegistrar g_routerMeshlessRegistrar;
+}
 
 

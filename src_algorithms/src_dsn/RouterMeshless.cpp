@@ -1,7 +1,8 @@
-﻿#include "RouterMeshless.h"
+#include "RouterMeshless.h"
 #include <algorithm>
 #include <utility>
 #include "../src_basics/utils.h"
+#include "../src_basics/RouterFactory.h"
 #include <cstdio>
 #include <map>
 
@@ -36,7 +37,7 @@ struct EdgeKeyHash {
 	}
 };
 
-void RouterMeshless::routerReset(double& gridSize) {
+void RouterMeshless::routerReset(double gridSize) {
 	//1.算法过程中不断补充的数据
 	m_debugEnd = false;
 	m_vias.clear();

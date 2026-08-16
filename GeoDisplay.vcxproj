@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -114,60 +114,73 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src_config\AppConfig.cpp" />
+    <ClCompile Include="src_config\ConfigManager.cpp" />
+    <ClCompile Include="src_data\dataStructUI.cpp" />
+    <ClCompile Include="src_data\dsn\DataParser_dsn.cpp" />
+    <ClCompile Include="src_paint\Diagram.cpp" />
+    <ClCompile Include="src_paint\DiagramStyle.cpp" />
+    <ClCompile Include="src_paint\TabPageBase.cpp" />
+    <ClCompile Include="src_paint\TabPageRegister.cpp" />
+    <ClCompile Include="src_paint\pages\dsn\TabPage_dsn.cpp" />
+    <ClCompile Include="src_panels\PanelBase.cpp" />
+    <ClCompile Include="src_panels\PanelManager.cpp" />
+    <ClCompile Include="src_panels\panels\options\OptionsPanel.cpp" />
+    <ClCompile Include="src_services\RoutingController.cpp" />
+    <ClCompile Include="src_ui\GeoDisplay.cpp" />
+    <ClCompile Include="src_ui\setupMenuBar.cpp" />
+    <ClCompile Include="src_ui\setupPanels.cpp" />
+    <ClCompile Include="src_ui\setupTabWidget.cpp" />
+    <ClCompile Include="src_ui\setupToolBar.cpp" />
     <ClCompile Include="src_algorithms\src_basics\dataStructAlg.cpp" />
     <ClCompile Include="src_algorithms\src_basics\utils.cpp" />
+    <ClCompile Include="src_algorithms\src_basics\RouterFactory.cpp" />
     <ClCompile Include="src_algorithms\src_dsn\RouterMeshless.cpp" />
     <ClCompile Include="src_algorithms\src_dsn\MST.cpp" />
-    <ClCompile Include="src_baseClasses\dataStructUI.cpp" />
-    <ClCompile Include="src_baseClasses\TabPage.cpp" />
-    <ClCompile Include="src_config\configUI.cpp" />
-    <ClCompile Include="src_config\DiagramStyle.cpp" />
-    <ClCompile Include="src_paint\Diagram.cpp" />
-    <ClCompile Include="src_paint\TabPageRegister.cpp" />
-    <ClCompile Include="src_paint\TabPage_dsn\AlgorithmLink\AlgorithmLink_dsn.cpp" />
-    <ClCompile Include="src_paint\TabPage_dsn\DataParser_dsn.cpp" />
-    <ClCompile Include="src_paint\TabPage_dsn\TabPage_dsn.cpp" />
-    <ClCompile Include="src_uiDesign\GeoDisplay.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="src_uiDesign\OptionsPanel.cpp" />
-    <ClCompile Include="src_uiDesign\setupTabWidget.cpp" />
-    <ClCompile Include="src_uiDesign\setupMenuBar.cpp" />
-    <ClCompile Include="src_uiDesign\setupOptionPanel.cpp" />
-    <ClCompile Include="src_uiDesign\setupToolBar.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="src_uiDesign\GeoDisplay.ui" />
-    <QtUic Include="src_uiDesign\OptionsPanel.ui" />
+    <QtUic Include="src_ui\GeoDisplay.ui" />
+    <QtUic Include="src_panels\panels\options\OptionsPanel.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src_uiDesign\GeoDisplay.h" />
+    <QtMoc Include="src_ui\GeoDisplay.h" />
+    <QtMoc Include="src_panels\panels\options\OptionsPanel.h" />
+    <QtMoc Include="src_paint\Diagram.h" />
+    <QtMoc Include="src_paint\TabPageBase.h" />
+    <QtMoc Include="src_paint\pages\dsn\TabPage_dsn.h" />
+    <QtMoc Include="src_panels\PanelBase.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="src_uiDesign\GeoDisplay.qrc" />
+    <QtRcc Include="src_ui\GeoDisplay.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src_uiDesign\OptionsPanel.h" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="src_config\AppConfig.h" />
+    <ClInclude Include="src_config\ConfigBase.h" />
+    <ClInclude Include="src_config\ConfigManager.h" />
+    <ClInclude Include="src_data\DataBase.h" />
+    <ClInclude Include="src_data\DataParserBase.h" />
+    <ClInclude Include="src_data\DiagramDataBase.h" />
+    <ClInclude Include="src_data\dataStructUI.h" />
+    <ClInclude Include="src_data\dsn\Data_dsn.h" />
+    <ClInclude Include="src_data\dsn\DataParser_dsn.h" />
+    <ClInclude Include="src_data\dsn\Style_dsn.h" />
+    <ClInclude Include="src_paint\DiagramStyle.h" />
+    <ClInclude Include="src_panels\PanelManager.h" />
+    <ClInclude Include="src_services\RoutingController.h" />
     <ClInclude Include="src_algorithms\src_basics\dataStructAlg.h" />
     <ClInclude Include="src_algorithms\src_basics\utils.h" />
-    <ClInclude Include="src_algorithms\src_dsn\Grid.h" />
+    <ClInclude Include="src_algorithms\src_basics\RouterBase.h" />
+    <ClInclude Include="src_algorithms\src_basics\SteinerSolverBase.h" />
+    <ClInclude Include="src_algorithms\src_basics\RouterFactory.h" />
     <ClInclude Include="src_algorithms\src_dsn\RouterMeshless.h" />
     <ClInclude Include="src_algorithms\src_dsn\MST.h" />
+    <ClInclude Include="src_algorithms\src_dsn\Grid.h" />
     <ClInclude Include="src_algorithms\src_dsn\RoutingNode.h" />
-    <ClInclude Include="src_baseClasses\Data.h" />
-    <ClInclude Include="src_baseClasses\DataParser.h" />
-    <ClInclude Include="src_baseClasses\dataStructUI.h" />
-    <ClInclude Include="src_paint\TabPage_dsn\AlgorithmLink\AlgorithmLink_dsn.h" />
-    <ClInclude Include="src_paint\TabPage_dsn\Style_dsn.h" />
-    <QtMoc Include="src_baseClasses\TabPage.h" />
-    <ClInclude Include="src_baseClasses\DiagramData.h" />
-    <QtMoc Include="src_config\configUI.h" />
-    <QtMoc Include="src_paint\Diagram.h" />
-    <ClInclude Include="src_config\DiagramStyle.h" />
-    <ClInclude Include="src_paint\TabPage_dsn\DataParser_dsn.h" />
-    <ClInclude Include="src_paint\TabPage_dsn\Data_dsn.h" />
-    <QtMoc Include="src_paint\TabPage_dsn\TabPage_dsn.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

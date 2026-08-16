@@ -1,5 +1,5 @@
 #include "Diagram.h"
-#include "../src_config/DiagramStyle.h"
+#include "DiagramStyle.h"
 #include <QTimer>
 #include <QTabWidget>
 #include <cmath>

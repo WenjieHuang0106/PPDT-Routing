@@ -6,8 +6,9 @@
 #include <stack>
 
 #include "RoutingNode.h"
-struct SteinerNode;
-using STN = std::shared_ptr<SteinerNode>;
+#include "../src_basics/SteinerSolverBase.h"
+#include "../src_basics/RouterFactory.h"
+// SteinerNode 前向声明与 STN 别名已移至 SteinerSolverBase.h，此处通过 include 获得
 
 struct SteinerNode : public std::enable_shared_from_this<SteinerNode> {
 	PinPad* pin;  // 指向独立创建的PinPad对象
@@ -162,7 +163,7 @@ struct SteinerNode : public std::enable_shared_from_this<SteinerNode> {
 	}
 };
 
-class SteinerTreeSolver {
+class SteinerTreeSolver : public SteinerSolverBase {
 public:
 	using SteinerTreePtr = STN;
 	using SteinerTreeMap = std::unordered_map<std::string, SteinerTreePtr>;
@@ -180,11 +181,11 @@ public:
 	~SteinerTreeSolver() {}
 
 	// 计算所有net的斯坦纳树
-	void computeSteinerTrees(std::unordered_map<std::string, std::vector<PinPad*>>& nets, std::unordered_map<std::string, NetInfo>& netInfos, SteinerTreeMap& forest_roots);
-	void insertSteinerNodes(const unordered_map<string, NetInfo>& netsInfos, const unordered_map<string, ViaInfo>& viaInfos, SteinerTreeMap& forest_roots, unordered_map<string, PinPad>& preVias);
-	void setFlyLines(const SteinerTreeMap& forest_roots, std::vector<std::vector<Line>>& flyLines);
+	void computeSteinerTrees(std::unordered_map<std::string, std::vector<PinPad*>>& nets, std::unordered_map<std::string, NetInfo>& netInfos, SteinerTreeMap& forest_roots) override;
+	void insertSteinerNodes(const unordered_map<string, NetInfo>& netsInfos, const unordered_map<string, ViaInfo>& viaInfos, SteinerTreeMap& forest_roots, unordered_map<string, PinPad>& preVias) override;
+	void setFlyLines(const SteinerTreeMap& forest_roots, std::vector<std::vector<Line>>& flyLines) override;
 
-	void setSteinerNodesOn(bool steinerNodes) { m_insertSNsOn = steinerNodes; };
+	void setSteinerNodesOn(bool steinerNodes) override { m_insertSNsOn = steinerNodes; };
 
 private:
 	SteinerTreePtr computeMST(const std::vector<PinPad*>& original_pins);
@@ -210,5 +211,16 @@ private:
 	void disconnectTreeEdge(const SteinerTreePtr& u, const SteinerTreePtr& v);					//断开树中一条边（安全封装）
 	PinPad* createVia(const Point& pos, const LayerPair& layerPair, unordered_map<string, PinPad>& preVias);
 };
+
+// 自注册到 SteinerFactory
+namespace detail {
+	struct MSTRegistrar {
+		MSTRegistrar() {
+			SteinerFactory::instance().registerCreator("MST",
+				[]() { return std::unique_ptr<SteinerSolverBase>(new SteinerTreeSolver()); });
+		}
+	};
+	static MSTRegistrar g_mstRegistrar;
+}
 
 

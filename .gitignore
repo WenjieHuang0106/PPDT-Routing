@@ -1,6 +1,7 @@
 x64
 PTreeRouting
 .vs
+.trae/
 *.vcxproj.user
 Debug/
 debug/
@@ -8,7 +9,8 @@ dbg/
 Release/
 release/
 rls/
-src_config/config.config
+config/app_last.config
+config/configs/
 data/result
 **/*.exe
 **/*.pdb

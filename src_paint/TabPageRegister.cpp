@@ -1,7 +1,7 @@
-#include "../src_baseClasses/TabPage.h"
+#include "TabPageBase.h"
 
 //1.包含所需头文件
-#include "TabPage_dsn/TabPage_dsn.h"		//(2)dsn类PCB文件
+#include "pages/dsn/TabPage_dsn.h"		//(2)dsn类PCB文件
 
 namespace {
 	// 2.定义构造函数

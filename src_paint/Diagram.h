@@ -1,14 +1,14 @@
 #pragma once
-#include "../src_baseClasses/dataStructUI.h"
-#include "../src_baseClasses/DiagramData.h"
-#include "../src_config/configUI.h"
+#include "../src_data/dataStructUI.h"
+#include "../src_data/DiagramDataBase.h"
+#include "../src_config/AppConfig.h"
 #include <QWidget>
 #include <QTimer>
 
 class Diagram : public QWidget {
 	Q_OBJECT
 public:
-	explicit Diagram(std::shared_ptr<DiagramData> data, ConfigUI* config, QWidget* parent = nullptr)
+	explicit Diagram(std::shared_ptr<DiagramDataBase> data, AppConfig* config, QWidget* parent = nullptr)
 		: QWidget(parent), m_config(config), m_data(data) {
 		m_scaleFactor = 1.0;
 		setMouseTracking(true);
@@ -37,8 +37,8 @@ public:
 	//public:
 private:
 	// 核心数据
-	std::shared_ptr<DiagramData> m_data;
-	ConfigUI* m_config;
+	std::shared_ptr<DiagramDataBase> m_data;
+	AppConfig* m_config;
 	QPointF* m_minPt;
 	QPointF* m_maxPt;
 
