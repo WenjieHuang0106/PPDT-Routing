@@ -389,27 +389,7 @@ private:
 		double F_g;			//归一化引力
 		NodeForceData() : F_g(0), pushVec(Point(0, 0)) {}
 	};
-	void geoTransform();
-	bool pushVecCheck(PathNode* pushNode, vector<Point>& pushVecs, PathNode* head, const unordered_map<Point, vector<PathNode*>, Point::Hash>& posNodes);
-	bool checkPadForbidden(const Point& pt, const Point& Mpos, const Point& Npos, vector<Point>& pushVecs);
-	bool checkLinePtToPush(PathNode* headOrTail, const Point& Mpos, const Point& Npos, Point& pushVec);
-	void detectMergeableEdges(const vector<PathNode*>& nodes, vector<vector<PathNode*>>& gS, vector<vector<PathNode*>>& gE);
-	void buildGravityPath1(PathNode* head, const unordered_map<Point, vector<PathNode*>, Point::Hash>& posNodes, unordered_map<PathNode*, Point>& gravity);	//求端点
-	void buildGravityNode1(PathNode* cur, PathNode* head, PathNode* tail, const vector<PathNode*>& group, Point& gSum);	//求端点
-	void buildGravityPath(PathNode* head, const unordered_map<Point, vector<PathNode*>, Point::Hash>& posNodes, unordered_map<PathNode*, Point>& gravity);	//求中点
-	void buildGravityPos(int layer, const vector<Point>& pos, PathNode* head, PathNode* tail, const vector<PathNode*>& group, Point& gSum);	//求中点
-	double calcStepLength(PathNode* node_pre)const;
-
-	void clacGravity(const Point& p1, const Point& p2, const vector<Point>& pgs, const double& gamaL, Point& g)const;
-	void clacGravity1(const Point& p1, const Point& p2, const vector<Point>& pgs, const double& gamaL, Point& g)const;	//引力场（质心法）
-	void clacGravity2(const Point& p1, const Point& p2, const vector<Point>& pgs, const double& gamaL, Point& g)const;	//引力场（分段质心法）
-	void clacGravity3(const Point& p1, const Point& p2, const vector<Point>& pgs, const double& gamaL, Point& g)const;	//引力场（积分法）
-
-	bool pushForAtomic(vector<vector<PathNode*>>& gS, vector<vector<PathNode*>>& gE);
-	void makeEdgeAtomic(const vector<vector<PathNode*>>& gS, const vector<vector<PathNode*>>& gE);
-	void netPathsToTree(const unordered_map<Point, vector<PathNode*>, Point::Hash>& posNodes);
-
-
+	
 private:
 	string m_netNameBackup;
 	void netNameChange(const string& netName) {
